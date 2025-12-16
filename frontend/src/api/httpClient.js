@@ -1,7 +1,7 @@
-const API_BASE_URL = "http://localhost:8080";
-
+import { API_BASE_URL } from "../constants/api";
+import { STORAGE_KEYS } from "../constants/storage";
 function getAuthHeaders() {
-  const token = localStorage.getItem("authToken");
+  const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
   if (!token) return {};
   return {
     Authorization: `Bearer ${token}`,

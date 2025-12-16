@@ -1,7 +1,7 @@
-const API_BASE_URL = "http://localhost:8080";
+import { API_BASE_URL, API_ENDPOINTS } from "../constants/api";
 
 export async function loginRequest(username, password) {
-  const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+  const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.AUTH_LOGIN}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

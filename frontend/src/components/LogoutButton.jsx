@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { ROUTES } from "../constants/routes";
 
 export default function LogoutButton() {
   const { logout } = useAuth();
@@ -8,7 +9,7 @@ export default function LogoutButton() {
 
   const handleLogout = () => {
     logout();
-    navigate("/login", { replace: true });
+    navigate(ROUTES.LOGIN, { replace: true });
   };
 
   return (

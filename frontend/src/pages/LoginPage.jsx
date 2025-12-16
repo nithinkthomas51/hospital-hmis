@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { loginRequest } from "../api/authApi";
 import { useAuth } from "../context/AuthContext";
+import { ROLES } from "../constants/roles";
+import { ROUTES } from "../constants/routes";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -28,20 +30,20 @@ export default function LoginPage() {
       login(data.token, data.username, data.roles);
 
       const roles = data.roles || [];
-      if (roles.some((r) => r.includes("ADMIN"))) {
-        navigate("/admin");
-      } else if (roles.some((r) => r.includes("DOCTOR"))) {
-        navigate("/doctor");
-      } else if (roles.some((r) => r.includes("RECEPTIONIST"))) {
-        navigate("/receptionist");
-      } else if (roles.some((r) => r.includes("PHARMACIST"))) {
-        navigate("/pharmacy");
-      } else if (roles.some((r) => r.includes("TECHNICIAN"))) {
-        navigate("/lab");
-      } else if (roles.some((r) => r.includes("PATIENT"))) {
-        navigate("/patient");
+      if (roles.some((r) => r.includes(ROLES.ADMIN))) {
+        navigate(ROUTES.ADMIN_HOME);
+      } else if (roles.some((r) => r.includes(ROLES.DOCTOR))) {
+        navigate(ROUTES.DOCTOR_HOME);
+      } else if (roles.some((r) => r.includes(ROLES.RECEPTIONIST))) {
+        navigate(ROUTES.RECEPTION_HOME);
+      } else if (roles.some((r) => r.includes(ROLES.PHARMACIST))) {
+        navigate(ROUTES.PHARMACY_HOME);
+      } else if (roles.some((r) => r.includes(ROLES.TECHNICIAN))) {
+        navigate(ROUTES.LAB_HOME);
+      } else if (roles.some((r) => r.includes(ROLES.PATIENT_HOME))) {
+        navigate(ROUTES.PATIENT_HOME);
       } else {
-        navigate("/login");
+        navigate(ROUTES.LOGIN);
       }
     } catch (err) {
       setError(err.message || "Login failed");

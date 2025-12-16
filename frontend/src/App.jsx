@@ -9,6 +9,9 @@ import PatientDashboard from "./pages/PatientDashboard";
 import LabDashboard from "./pages/LabDashboard";
 import PharmacyDashboard from "./pages/PharmacyDashboard";
 import ReceptionistDashboard from "./pages/ReceptionistDashboard";
+import DepartmentsPage from "./pages/DepartmentsPage";
+import { ROUTES } from "./constants/routes";
+import { ROLES } from "./constants/roles";
 
 function App() {
   return (
@@ -16,54 +19,63 @@ function App() {
       <Router>
         <Routes>
           {/* public */}
-          <Route path="/login" element={<LoginPage />} />
+          <Route path={ROUTES.LOGIN} element={<LoginPage />} />
 
           {/* Protected by role */}
           <Route
-            path="/admin"
+            path={ROUTES.ADMIN_HOME}
             element={
-              <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
                 <AdminDashboard />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/doctor"
+            path={ROUTES.DOCTOR_HOME}
             element={
-              <ProtectedRoute allowedRoles={["DOCTOR"]}>
+              <ProtectedRoute allowedRoles={[ROLES.DOCTOR]}>
                 <DoctorDashboard />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/receptionist"
+            path={ROUTES.RECEPTION_HOME}
             element={
-              <ProtectedRoute allowedRoles={["RECEPTIONIST"]}>
+              <ProtectedRoute allowedRoles={[ROLES.RECEPTIONIST]}>
                 <ReceptionistDashboard />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/pharmacy"
+            path={ROUTES.PHARMACY_HOME}
             element={
-              <ProtectedRoute allowedRoles={["PHARMACIST"]}>
+              <ProtectedRoute allowedRoles={[ROLES.PHARMACIST]}>
                 <PharmacyDashboard />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/lab"
+            path={ROUTES.LAB_HOME}
             element={
-              <ProtectedRoute allowedRoles={["TECHNICIAN"]}>
+              <ProtectedRoute allowedRoles={[ROLES.TECHNICIAN]}>
                 <LabDashboard />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/patient"
+            path={ROUTES.PATIENT_HOME}
             element={
-              <ProtectedRoute allowedRoles={["PATIENT"]}>
+              <ProtectedRoute allowedRoles={[ROLES.PATIENT]}>
                 <PatientDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path={ROUTES.ADMIN_DEPARTMENTS}
+            element={
+              <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
+                <DepartmentsPage />
               </ProtectedRoute>
             }
           />

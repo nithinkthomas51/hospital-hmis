@@ -1,17 +1,19 @@
 import { createContext, useContext, useState } from "react";
+import { STORAGE_KEYS } from "../constants/storage";
+import { ROLE_PREFIX } from "../constants/roles";
 
 const AuthContext = createContext(null);
 
 function getInitialToken() {
-  return localStorage.getItem("authToken");
+  return localStorage.getItem(STORAGE_KEYS.TOKEN);
 }
 
 function getInitialUsername() {
-  return localStorage.getItem("authUsername");
+  return localStorage.getItem(STORAGE_KEYS.USERNAME);
 }
 
 function getInitialRoles() {
-  const savedRoles = localStorage.getItem("authRoles");
+  const savedRoles = localStorage.getItem(STORAGE_KEYS.ROLES);
   if (!savedRoles) return [];
   try {
     return JSON.parse(savedRoles);
@@ -30,9 +32,9 @@ export function AuthProvider({ children }) {
     setUsername(newUsername);
     setRoles(rolesArray) || [];
 
-    localStorage.setItem("authToken", newToken);
-    localStorage.setItem("authUsername", newUsername);
-    localStorage.setItem("authRoles", JSON.stringify(rolesArray || []));
+    localStorage.setItem(STORAGE_KEYS.TOKEN, newToken);
+    localStorage.setItem(STORAGE_KEYS.USERNAME, newUsername);
+    localStorage.setItem(STORAGE_KEYS.ROLES, JSON.stringify(rolesArray || []));
   };
 
   const logout = () => {
@@ -40,9 +42,9 @@ export function AuthProvider({ children }) {
     setUsername(null);
     setRoles([]);
 
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("authUsername");
-    localStorage.removeItem("authRoles");
+    localStorage.removeItem(STORAGE_KEYS.TOKEN);
+    localStorage.removeItem(STORAGE_KEYS.USERNAME);
+    localStorage.removeItem(STORAGE_KEYS.ROLES);
   };
 
   const isAuthenticated = !!token;
@@ -50,7 +52,10 @@ export function AuthProvider({ children }) {
   const hasRole = (roleName) => {
     if (!roles) return false;
     return roles.some(
-      (r) => r === roleName || r === `ROLE_${roleName}` || r.endsWith(roleName)
+      (r) =>
+        r === roleName ||
+        r === `${ROLE_PREFIX}${roleName}` ||
+        r.endsWith(roleName)
     );
   };
 
