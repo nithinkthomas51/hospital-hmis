@@ -19,6 +19,13 @@ export default function AdminDashboard() {
           <Button variant="contained" component={Link} to={ROUTES.ADMIN_STAFF}>
             Manage Staff
           </Button>
+          <Button
+            variant="contained"
+            component={Link}
+            to={ROUTES.ADMIN_SCHEDULES}
+          >
+            Manage Schedules
+          </Button>
         </Box>
       </Container>
       <div style={{ padding: 16 }}>

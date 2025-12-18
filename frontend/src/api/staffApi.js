@@ -1,23 +1,25 @@
 import { API_BASE_URL, API_ENDPOINTS } from "../constants/api";
+import { request } from "./requestUtil";
 
 const STAFF_BASE_URL = `${API_BASE_URL}${API_ENDPOINTS.ADMIN_STAFF}`;
 
-async function request(url, options = {}) {
-  console.log(`URL in request API: ${url}`);
-  const res = await fetch(url, options);
-  const contentType = res.headers.get("Content-Type") || "";
-  const isJson = contentType.includes("application/json");
-  const data = isJson
-    ? await res.json().catch(() => null)
-    : await res.text().catch(() => null);
+// async function request_local(url, options = {}) {
+//   const res = await fetch(url, options);
+//   const contentType = res.headers.get("Content-Type") || "";
+//   const isJson = contentType.includes("application/json");
+//   const data = isJson
+//     ? await res.json().catch(() => null)
+//     : await res.text().catch(() => null);
 
-  if (!res.ok) {
-    const msg = (data && data.message) || `Request failed (${res.status})`;
-    throw new Error(msg);
-  }
-
-  return data;
-}
+//   if (!res.ok) {
+//     const msg =
+//       (data && data.message) ||
+//       (typeof data === "string" && data) ||
+//       `Request failed (${res.status})`;
+//     throw new Error(msg);
+//   }
+//   return data;
+// }
 
 export function listStaff(token, onlyActive = true) {
   const url = new URL(STAFF_BASE_URL);

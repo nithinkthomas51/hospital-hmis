@@ -5,4 +5,5 @@ export const API_ENDPOINTS = {
   ADMIN_DEPARTMENTS: "/api/admin/departments",
   ADMIN_STAFF: "/api/admin/staff",
   RECEPTION_PATIENTS: "/api/reception/patients",
+  SHIFT_SCHEDULE: "/api/admin/schedules",
 };
