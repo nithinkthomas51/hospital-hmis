@@ -16,6 +16,9 @@ export default function AdminDashboard() {
           >
             Manage Departments
           </Button>
+          <Button variant="contained" component={Link} to={ROUTES.ADMIN_STAFF}>
+            Manage Staff
+          </Button>
         </Box>
       </Container>
       <div style={{ padding: 16 }}>

@@ -22,12 +22,10 @@ import {
 import TopBar from "../components/TopBar";
 import {
   createDepartment,
-  deactivateDepartment,
   listDepartments,
   updateDepartment,
 } from "../api/departmentsApi";
-import { Link } from "react-router-dom";
-import { ROUTES } from "../constants/routes";
+import { AdminHomeButton } from "../components/AdminHomeButton";
 
 export default function DepartmentsPage() {
   const [departments, setDepartments] = useState([]);
@@ -110,18 +108,6 @@ export default function DepartmentsPage() {
     }
   };
 
-  const handleDeactivate = async (id) => {
-    setError("");
-    setInfo("");
-    try {
-      await deactivateDepartment(id);
-      setInfo("Department deactivated");
-      await load();
-    } catch (e) {
-      setError(e.message);
-    }
-  };
-
   return (
     <>
       <TopBar title="Departments" />
@@ -138,16 +124,7 @@ export default function DepartmentsPage() {
           <Typography variant="h6" sx={{ mb: 2 }}>
             Create Department
           </Typography>
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <Button
-              variant="contained"
-              component={Link}
-              to={ROUTES.ADMIN_HOME}
-              sx={{ marginLeft: "auto" }}
-            >
-              Admin Home
-            </Button>
-          </Box>
+          <AdminHomeButton />
         </Container>
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>

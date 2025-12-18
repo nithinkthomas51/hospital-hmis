@@ -10,6 +10,7 @@ import LabDashboard from "./pages/LabDashboard";
 import PharmacyDashboard from "./pages/PharmacyDashboard";
 import ReceptionistDashboard from "./pages/ReceptionistDashboard";
 import DepartmentsPage from "./pages/DepartmentsPage";
+import StaffDashboardPage from "./pages/staffDashboardPage";
 import { ROUTES } from "./constants/routes";
 import { ROLES } from "./constants/roles";
 
@@ -76,6 +77,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
                 <DepartmentsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path={ROUTES.ADMIN_STAFF}
+            element={
+              <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
+                <StaffDashboardPage />
               </ProtectedRoute>
             }
           />

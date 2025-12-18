@@ -52,16 +52,3 @@ export async function updateDepartment(id, payload) {
   if (!res.ok) throw new Error(await res.text());
   return res.json();
 }
-
-export async function deactivateDepartment(id) {
-  const res = await fetch(
-    `${API_BASE_URL}${API_ENDPOINTS.ADMIN_DEPARTMENTS}/${id}/deactivate`,
-    {
-      method: "PATCH",
-      headers: {
-        ...authHeader(),
-      },
-    }
-  );
-  if (!res.ok) throw new Error("Failed to deactivate department");
-}
