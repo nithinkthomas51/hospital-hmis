@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.hmis.dto.staff.StaffCreateRequest;
 import com.hmis.dto.staff.StaffResponse;
 import com.hmis.dto.staff.StaffUpdateRequest;
+import com.hmis.enums.RoleName;
 import com.hmis.model.Department;
 import com.hmis.model.Role;
 import com.hmis.model.Staff;
@@ -18,7 +19,6 @@ import com.hmis.repository.DepartmentRepository;
 import com.hmis.repository.RoleRepository;
 import com.hmis.repository.StaffRepository;
 import com.hmis.repository.UserRepository;
-import com.hmis.security.RoleName;
 
 import jakarta.transaction.Transactional;
 

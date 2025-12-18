@@ -2,7 +2,7 @@ package com.hmis.dto.staff;
 
 import java.util.List;
 
-import com.hmis.security.RoleName;
+import com.hmis.enums.RoleName;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

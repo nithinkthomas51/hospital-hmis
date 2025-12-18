@@ -1,4 +1,4 @@
-package com.hmis.security;
+package com.hmis.enums;
 
 public enum RoleName {
 	ADMIN,
