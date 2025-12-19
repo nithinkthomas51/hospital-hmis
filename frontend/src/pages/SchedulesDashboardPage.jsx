@@ -90,7 +90,7 @@ export default function SchedulesDashboardPage() {
     const deptId = Number(createForm.departmentId || filterDepartmentId || 0);
     if (!deptId) return staff.filter((s) => s.active === true);
     return staff.filter((s) => s.active === true && s.departmentId === deptId);
-  });
+  }, [staff, createForm.departmentId, filterDepartmentId]);
 
   const filteredSchedules = useMemo(() => {
     let rows = [...schedules];
@@ -246,13 +246,13 @@ export default function SchedulesDashboardPage() {
       field: "startAt",
       headerName: "Start",
       width: 190,
-      valueFormatter: (v) => new Date(v.value).toLocaleString(),
+      valueFormatter: (v) => new Date(v).toLocaleString(),
     },
     {
       field: "endAt",
       headerName: "End",
       width: 190,
-      valueFormatter: (v) => new Date(v.value).toLocaleString(),
+      valueFormatter: (v) => new Date(v).toLocaleString(),
     },
     {
       field: "shiftType",
@@ -353,19 +353,18 @@ export default function SchedulesDashboardPage() {
             onChange={(e) => setFilterStaffId(e.target.value)}
           >
             <MenuItem value="">All</MenuItem>
-            {filterDepartmentId
+            {(filterDepartmentId
               ? staff.filter(
                   (s) =>
                     s.active === true &&
                     s.departmentId === Number(filterDepartmentId)
                 )
-              : staff
-                  .filter((s) => s.active === true)
-                  .map((s) => (
-                    <MenuItem key={s.id} value={s.id}>
-                      {s.firstName} {s.lastName} {s.userName}
-                    </MenuItem>
-                  ))}
+              : staff.filter((s) => s.active === true)
+            ).map((s) => (
+              <MenuItem key={s.id} value={s.id}>
+                {s.firstName} {s.lastName} {s.userName}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Box>
@@ -392,7 +391,7 @@ export default function SchedulesDashboardPage() {
           initialState={{
             pagination: { paginationModel: { pageSize: 10, page: 0 } },
           }}
-        />{" "}
+        />
       </Box>
 
       {/* Create Dialog box */}
@@ -436,7 +435,7 @@ export default function SchedulesDashboardPage() {
             >
               {staffForSelectedDept.map((s) => (
                 <MenuItem key={s.id} value={s.id}>
-                  {s.firstName} {s.lastName} ({s.userName})
+                  {s.firstName} {s.lastName} ({s.designation})
                 </MenuItem>
               ))}
             </Select>
@@ -474,7 +473,7 @@ export default function SchedulesDashboardPage() {
               }
             >
               {SHIFT_TYPES.map((t) => (
-                <MenuItem key={t.id} value={t.id}>
+                <MenuItem key={t} value={t}>
                   {t}
                 </MenuItem>
               ))}

@@ -5,8 +5,9 @@ export const ROUTES = {
   ADMIN_STAFF: "/admin/staff",
   ADMIN_SCHEDULES: "/admin/schedules",
   DOCTOR_HOME: "/doctor",
-  RECEPTION_HOME: "/receptionist",
+  RECEPTION_HOME: "/reception",
   PHARMACY_HOME: "/pharmacy",
   LAB_HOME: "/lab",
   PATIENT_HOME: "/patient",
+  RECEPTION_PATIENTS: "/reception/patients",
 };

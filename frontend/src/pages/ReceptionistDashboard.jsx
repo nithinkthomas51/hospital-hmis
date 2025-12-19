@@ -1,7 +1,23 @@
+import { Button, Container, Box } from "@mui/material";
+import { Link } from "react-router-dom";
+import TopBar from "../components/TopBar";
+import { ROUTES } from "../constants/routes";
+
 export default function ReceptionistDashboard() {
   return (
-    <div>
-      <h1>Receptionist Dashboard</h1>
-    </div>
+    <>
+      <TopBar title="Receptionist Dashboard" />
+      <Container sx={{ mt: 3 }}>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <Button
+            variant="contained"
+            component={Link}
+            to={ROUTES.RECEPTION_PATIENTS}
+          >
+            Patient Registration
+          </Button>
+        </Box>
+      </Container>
+    </>
   );
 }

@@ -14,6 +14,7 @@ import StaffDashboardPage from "./pages/staffDashboardPage";
 import { ROUTES } from "./constants/routes";
 import { ROLES } from "./constants/roles";
 import SchedulesDashboardPage from "./pages/SchedulesDashboardPage";
+import ReceptionPatientPage from "./pages/ReceptionPatientPage";
 
 function App() {
   return (
@@ -96,6 +97,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
                 <SchedulesDashboardPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path={ROUTES.RECEPTION_PATIENTS}
+            element={
+              <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.RECEPTIONIST]}>
+                <ReceptionPatientPage />
               </ProtectedRoute>
             }
           />
