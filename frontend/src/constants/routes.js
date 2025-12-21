@@ -10,4 +10,5 @@ export const ROUTES = {
   LAB_HOME: "/lab",
   PATIENT_HOME: "/patient",
   RECEPTION_PATIENTS: "/reception/patients",
+  RECEPTION_QUEUE: "/reception/queue",
 };

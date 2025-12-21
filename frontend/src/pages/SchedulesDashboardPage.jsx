@@ -128,6 +128,7 @@ export default function SchedulesDashboardPage() {
 
   useEffect(() => {
     refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onlyActive]);
 
   function openCreateDialog() {

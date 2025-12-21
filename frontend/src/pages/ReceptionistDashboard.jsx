@@ -16,6 +16,13 @@ export default function ReceptionistDashboard() {
           >
             Patient Registration
           </Button>
+          <Button
+            variant="contained"
+            component={Link}
+            to={ROUTES.RECEPTION_QUEUE}
+          >
+            OPD Visits
+          </Button>
         </Box>
       </Container>
     </>

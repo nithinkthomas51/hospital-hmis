@@ -75,6 +75,7 @@ export default function ReceptionPatientPage() {
 
   useEffect(() => {
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onlyActive]);
 
   function openCreate() {

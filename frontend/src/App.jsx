@@ -15,6 +15,7 @@ import { ROUTES } from "./constants/routes";
 import { ROLES } from "./constants/roles";
 import SchedulesDashboardPage from "./pages/SchedulesDashboardPage";
 import ReceptionPatientPage from "./pages/ReceptionPatientPage";
+import ReceptionQueuePage from "./pages/ReceptionistQueuePage";
 
 function App() {
   return (
@@ -106,6 +107,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.RECEPTIONIST]}>
                 <ReceptionPatientPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path={ROUTES.RECEPTION_QUEUE}
+            element={
+              <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.RECEPTIONIST]}>
+                <ReceptionQueuePage />
               </ProtectedRoute>
             }
           />
