@@ -3,29 +3,17 @@ import { request } from "./requestUtil";
 
 const STAFF_BASE_URL = `${API_BASE_URL}${API_ENDPOINTS.ADMIN_STAFF}`;
 
-// async function request_local(url, options = {}) {
-//   const res = await fetch(url, options);
-//   const contentType = res.headers.get("Content-Type") || "";
-//   const isJson = contentType.includes("application/json");
-//   const data = isJson
-//     ? await res.json().catch(() => null)
-//     : await res.text().catch(() => null);
-
-//   if (!res.ok) {
-//     const msg =
-//       (data && data.message) ||
-//       (typeof data === "string" && data) ||
-//       `Request failed (${res.status})`;
-//     throw new Error(msg);
-//   }
-//   return data;
-// }
-
 export function listStaff(token, onlyActive = true) {
   const url = new URL(STAFF_BASE_URL);
   url.searchParams.set("onlyActive", onlyActive);
   console.log(url.toString());
   return request(url.toString(), {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export function listStaffLookup(token) {
+  return request(`${API_BASE_URL}${API_ENDPOINTS.STAFF_LOOKUP}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }

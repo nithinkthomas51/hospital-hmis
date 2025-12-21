@@ -8,4 +8,6 @@ export const API_ENDPOINTS = {
   RECEPTION_VISITS: "/api/reception/visits",
   SHIFT_SCHEDULE: "/api/admin/schedules",
   PATIENTS: "/api/patients",
+  DEPARTMENT_LOOKUP: "/api/departments",
+  STAFF_LOOKUP: "/api/staff",
 };

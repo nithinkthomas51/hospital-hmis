@@ -20,6 +20,17 @@ export async function listDepartments(onlyActive = true) {
   return res.json();
 }
 
+export async function listDepartmentsLookup() {
+  const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.DEPARTMENT_LOOKUP}`, {
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeader(),
+    },
+  });
+  if (!res.ok) throw new Error("Failed to load departments");
+  return res.json();
+}
+
 export async function createDepartment(name, description) {
   const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ADMIN_DEPARTMENTS}`, {
     method: "POST",

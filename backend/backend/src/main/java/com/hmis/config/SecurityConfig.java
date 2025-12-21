@@ -35,7 +35,7 @@ public class SecurityConfig {
 			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth -> auth
-					.requestMatchers("/api/health", "/api/auth/login").permitAll()
+					.requestMatchers("/api/auth/login").permitAll()
 					.requestMatchers("/api/admin/**").hasRole("ADMIN")
 					.requestMatchers("/api/reception/**").hasAnyRole("RECEPTIONIST", "ADMIN")
 					.requestMatchers("/api/patients/**").hasAnyRole("ADMIN", 
@@ -44,6 +44,13 @@ public class SecurityConfig {
 							"PHARMACIST", 
 							"TECHNICIAN")
 					.requestMatchers("/api/doctor/visits/**").hasAnyRole("DOCTOR", "ADMIN")
+					.requestMatchers("/api/departments/**").hasAnyRole(
+							"ADMIN", 
+							"RECEPTIONIST", 
+							"DOCTOR", 
+							"TECHNICIAN", 
+							"PHARMACIST")
+					.requestMatchers("/api/staff").hasAnyRole("ADMIN", "RECEPTIONIST", "DOCTOR")
 					.anyRequest().authenticated()
 					)
 			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

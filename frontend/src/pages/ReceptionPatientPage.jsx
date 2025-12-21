@@ -27,6 +27,10 @@ import {
   deactivatePatient,
   activatePatient,
 } from "../api/patientsApi";
+import { listDepartmentsLookup } from "../api/departmentsApi";
+import { listStaffLookup } from "../api/staffApi";
+import { checkInVisit } from "../api/visitsApi";
+import { ROLES } from "../constants/roles";
 
 const emptyForm = {
   firstName: "",
@@ -59,6 +63,17 @@ export default function ReceptionPatientPage() {
   const [editForm, setEditForm] = useState({ ...emptyForm });
   const [selectedPatient, setSelectedPatient] = useState(null);
 
+  const [checkInOpen, setCheckInOpen] = useState(false);
+  const [checkInPatient, setCheckInPatient] = useState(null);
+
+  const [departments, setDepartments] = useState([]);
+  const [staff, setStaff] = useState([]);
+
+  const [checkInForm, setCheckInForm] = useState({
+    departmentId: "",
+    doctorId: "",
+  });
+
   async function load() {
     setError("");
     setSuccess("");
@@ -73,10 +88,24 @@ export default function ReceptionPatientPage() {
     }
   }
 
+  async function loadMeta() {
+    try {
+      const [deps, staffList] = await Promise.all([
+        listDepartmentsLookup(),
+        listStaffLookup(token),
+      ]);
+      setDepartments(deps || []);
+      setStaff(staffList || []);
+    } catch (e) {
+      setError(e.message || "Failed to load departments or staff");
+    }
+  }
+
   useEffect(() => {
     load();
+    loadMeta();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onlyActive]);
+  }, [onlyActive, token]);
 
   function openCreate() {
     setError("");
@@ -101,6 +130,35 @@ export default function ReceptionPatientPage() {
       emergencyContactPhone: row.emergencyContactPhone || "",
     });
     setEditOpen(true);
+  }
+
+  function openCheckIn(patient) {
+    setError("");
+    setSuccess("");
+    setCheckInPatient(patient);
+    setCheckInForm({ departmentId: "", doctorId: "" });
+    setCheckInOpen(true);
+  }
+
+  async function submitCheckIn() {
+    try {
+      if (!checkInForm.departmentId) {
+        throw new Error("Please select a department");
+      }
+      if (!checkInForm.doctorId) {
+        throw new Error("Please select a doctor");
+      }
+
+      await checkInVisit(token, {
+        patientOpNumber: checkInPatient.opNumber,
+        departmentId: Number(checkInForm.departmentId),
+        doctorId: Number(checkInForm.doctorId),
+      });
+      setCheckInOpen(false);
+      setSuccess(`Patient ${checkInPatient.opNumber} checked in successfully`);
+    } catch (e) {
+      setError(e.message || "Failed to check in patient");
+    }
   }
 
   function normalizePayload(form) {
@@ -181,6 +239,12 @@ export default function ReceptionPatientPage() {
     }
   }
 
+  const doctorsForDepartment = staff.filter(
+    (s) =>
+      s.departmentId === Number(checkInForm.departmentId) &&
+      s.roles?.includes(ROLES.DOCTOR)
+  );
+
   const columns = [
     { field: "opNumber", headerName: "OP No", width: 110 },
     { field: "firstName", headerName: "First Name", width: 140 },
@@ -214,6 +278,14 @@ export default function ReceptionPatientPage() {
             onClick={() => openEdit(params.row)}
           >
             Edit
+          </Button>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={() => openCheckIn(params.row)}
+            disabled={!params.row.active}
+          >
+            Check-in
           </Button>
           <Button
             size="small"
@@ -406,6 +478,68 @@ export default function ReceptionPatientPage() {
           <Button onClick={() => setCreateOpen(false)}>Cancel</Button>
           <Button variant="contained" onClick={submitCreate}>
             Register
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Check-in Dialog */}
+      <Dialog
+        open={checkInOpen}
+        onClose={() => setCheckInOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>Check-in Patient</DialogTitle>
+        <DialogContent sx={{ display: "grid", gap: 2, pt: 2 }}>
+          <TextField
+            label="OP Number"
+            value={checkInPatient?.opNumber || ""}
+            InputProps={{ readOnly: true }}
+            fullWidth
+          />
+
+          <FormControl fullWidth>
+            <InputLabel>Department</InputLabel>
+            <Select
+              label="Department"
+              value={checkInForm.departmentId}
+              onChange={(e) =>
+                setCheckInForm((p) => ({
+                  ...p,
+                  departmentId: e.target.value,
+                  doctorId: "",
+                }))
+              }
+            >
+              {departments.map((d) => (
+                <MenuItem key={d.id} value={d.id}>
+                  {d.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth disabled={!checkInForm.departmentId}>
+            <InputLabel>Doctor</InputLabel>
+            <Select
+              label="Doctor"
+              value={checkInForm.doctorId}
+              onChange={(e) =>
+                setCheckInForm((p) => ({ ...p, doctorId: e.target.value }))
+              }
+            >
+              {doctorsForDepartment.map((doc) => (
+                <MenuItem key={doc.id} value={doc.id}>
+                  {doc.firstName} {doc.lastName}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setCheckInOpen(false)}>Cancel</Button>
+          <Button variant="contained" onClick={submitCheckIn}>
+            Check-in
           </Button>
         </DialogActions>
       </Dialog>
