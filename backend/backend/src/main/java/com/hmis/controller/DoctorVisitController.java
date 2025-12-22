@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hmis.dto.opdvisit.OpdVisitResponse;
-import com.hmis.model.Staff;
-import com.hmis.repository.StaffRepository;
 import com.hmis.service.OpdVisitService;
 
 @RestController
@@ -20,30 +18,28 @@ import com.hmis.service.OpdVisitService;
 public class DoctorVisitController {
 	
 	private final OpdVisitService service;
-	private final StaffRepository repo;
 	
-	public DoctorVisitController(OpdVisitService service, StaffRepository repo) {
+	public DoctorVisitController(OpdVisitService service) {
 		this.service = service;
-		this.repo = repo;
 	}
 	
 	@GetMapping
-	public List<OpdVisitResponse> myQueue(
-			@RequestParam(required = false) String date, 
+	public List<OpdVisitResponse> myVisits(
+			@RequestParam(required = false) String date,
+			@RequestParam(required = false) String status,
 			Authentication auth) 
 	{
-		String username = auth.getName();
-		Staff doctor = repo.findByUsername(username)
-				.orElseThrow(() -> new IllegalArgumentException("Staff profile not found"));
-		return service.doctorQueue(doctor.getId(), date);
+		return service.doctorVisits(auth, date, status);
+	}
+	
+	@GetMapping("/{id}")
+	public OpdVisitResponse getVisitDetails(@PathVariable Long id, Authentication auth) {
+		return service.getVisitDetails(auth, id);
 	}
 	
 	@PatchMapping("/{id}/complete")
 	public void complete(@PathVariable Long id, Authentication auth) {
-		String username = auth.getName();
-		Staff doctor = repo.findByUsername(username)
-				.orElseThrow(() -> new IllegalArgumentException("Staff profile not found"));
-		service.complete(id, doctor.getId());
+		service.complete(id, auth);
 	}
 
 }

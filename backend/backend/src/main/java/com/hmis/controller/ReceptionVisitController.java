@@ -42,8 +42,9 @@ public class ReceptionVisitController {
 		return service.receptionistQueue(date, status, doctorId, deptId);
 	}
 	
-	@PatchMapping
+	@PatchMapping("/{id}/cancel")
 	public void cancel(@PathVariable Long id) {
+		System.out.println("");
 		service.cancel(id);
 	}
 

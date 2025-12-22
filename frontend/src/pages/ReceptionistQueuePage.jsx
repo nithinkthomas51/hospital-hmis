@@ -10,12 +10,15 @@ import {
   TextField,
   Typography,
   FormControl,
+  Container,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 import { useAuth } from "../context/AuthContext";
 import { fetchReceptionQueue, cancelVisit } from "../api/visitsApi";
 import { VISIT_STATUS } from "../constants/visitStatus";
+import { HomeButton } from "../components/HomeButton";
+import { ROUTES } from "../constants/routes";
 
 export default function ReceptionQueuePage() {
   const { token } = useAuth();
@@ -107,9 +110,20 @@ export default function ReceptionQueuePage() {
 
   return (
     <Box sx={{ p: 2 }}>
-      <Typography variant="h5" sx={{ mb: 2 }}>
-        Reception — OPD Queue
-      </Typography>
+      <Container
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mt: 3,
+          padding: 1,
+        }}
+      >
+        <Typography variant="h5" sx={{ mb: 2 }}>
+          Reception — OPD Queue
+        </Typography>
+        <HomeButton route={ROUTES.RECEPTION_HOME} />
+      </Container>
 
       {/* Filters */}
       <Box sx={{ display: "flex", gap: 1, mb: 2, flexWrap: "wrap" }}>
@@ -121,14 +135,6 @@ export default function ReceptionQueuePage() {
           onChange={(e) => setFilters((p) => ({ ...p, date: e.target.value }))}
         />
 
-        {/* <TextField
-          label="Status"
-          value={filters.status}
-          onChange={(e) =>
-            setFilters((p) => ({ ...p, status: e.target.value }))
-          }
-          placeholder="CHECKED_IN"
-        /> */}
         <FormControl sx={{ minWidth: 180 }}>
           <InputLabel>Status</InputLabel>
           <Select

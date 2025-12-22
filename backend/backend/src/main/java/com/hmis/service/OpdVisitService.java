@@ -7,6 +7,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.hmis.dto.opdvisit.OpdVisitCreateRequest;
@@ -98,12 +99,49 @@ public class OpdVisitService {
 		return out;
 	}
 	
-	public List<OpdVisitResponse> doctorQueue(Long doctorStaffId, String date) {
+	public List<OpdVisitResponse> doctorQueue(Authentication auth, String date) {
 		Instant[] range = dayRange(date);
+		Long doctorStaffId = getCurrentDoctor(auth).getId();
 		List<OpdVisit> list = opdVisitRepo.findDoctorQueue(doctorStaffId, range[0], range[1]);
 		List<OpdVisitResponse> out = new ArrayList<>();
 		for (OpdVisit v : list) out.add(mapToResponse(v));
 		return out;
+	}
+	
+	public List<OpdVisitResponse> doctorVisits(Authentication auth, String date, String status) {
+		Instant[] range = dayRange(date);
+		Long doctorsStaffId = getCurrentDoctor(auth).getId();
+		
+		VisitStatus st = null;
+		if (status != null && !status.trim().isEmpty()) {
+			try {
+				st = VisitStatus.valueOf(status.trim());
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException("Invalid status. Use CHECKED_IN, IN_PROGRESS, COMPLETED, CANCELLED");
+			}
+		}
+		
+		List<OpdVisit> list = opdVisitRepo.findDoctorVisits(doctorsStaffId, st, range[0], range[1]);
+		
+		List<OpdVisitResponse> out = new ArrayList<>();
+		for (OpdVisit v : list) out.add(mapToResponse(v));
+		return out;
+	}
+	
+	public OpdVisitResponse getVisitDetails(Authentication auth, Long visitId) {
+		Staff doctor = getCurrentDoctor(auth);
+		
+		OpdVisit visit = opdVisitRepo.findById(visitId)
+				.orElseThrow(() -> new IllegalArgumentException("Visit not found"));
+		if (!visit.isActive()) {
+			throw new IllegalArgumentException("Visit not active");
+		}
+		
+		if (visit.getDoctor() == null || !visit.getDoctor().getId().equals(doctor.getId())) {
+			throw new SecurityException("Operation not allowed");
+		}
+		
+		return mapToResponse(visit);
 	}
 	
 	@Transactional
@@ -115,11 +153,15 @@ public class OpdVisitService {
 			throw new IllegalStateException("Completed visit cannot be cancelled");
 		}
 		
+		System.out.println("Going to cancel v: " + v.getId());
+		
 		v.setStatus(VisitStatus.CANCELLED);
 	}
 	
 	@Transactional
-	public void complete(Long visitId, Long doctorId) {
+	public void complete(Long visitId, Authentication auth) {
+		
+		Long doctorId = getCurrentDoctor(auth).getId();
 		
 		OpdVisit v = opdVisitRepo.findById(visitId)
 				.orElseThrow(() -> new IllegalArgumentException("Visit not found"));
@@ -139,6 +181,11 @@ public class OpdVisitService {
 		v.setStatus(VisitStatus.COMPLETED);
 		v.setCompletedAt(Instant.now());
 		
+	}
+	
+	private Staff getCurrentDoctor(Authentication auth) {
+		return staffRepo.findByUsername(auth.getName())
+				.orElseThrow(() -> new IllegalArgumentException("Staff profile not found"));
 	}
 	
 	private Instant[] dayRange(String date) {

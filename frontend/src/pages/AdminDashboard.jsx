@@ -26,13 +26,6 @@ export default function AdminDashboard() {
           >
             Manage Schedules
           </Button>
-          <Button
-            variant="contained"
-            component={Link}
-            to={ROUTES.RECEPTION_PATIENTS}
-          >
-            Patient Registration
-          </Button>
         </Box>
       </Container>
       <div style={{ padding: 16 }}>

@@ -25,7 +25,9 @@ import {
   listDepartments,
   updateDepartment,
 } from "../api/departmentsApi";
-import { AdminHomeButton } from "../components/AdminHomeButton";
+import { HomeButton } from "../components/HomeButton";
+import { Routes } from "react-router-dom";
+import { ROUTES } from "../constants/routes";
 
 export default function DepartmentsPage() {
   const [departments, setDepartments] = useState([]);
@@ -124,7 +126,7 @@ export default function DepartmentsPage() {
           <Typography variant="h6" sx={{ mb: 2 }}>
             Create Department
           </Typography>
-          <AdminHomeButton />
+          <HomeButton route={ROUTES.ADMIN_HOME} />
         </Container>
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>

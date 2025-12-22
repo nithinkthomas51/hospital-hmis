@@ -29,7 +29,8 @@ import {
   activateStaff,
 } from "../api/staffApi";
 import { listDepartments } from "../api/departmentsApi";
-import { AdminHomeButton } from "../components/AdminHomeButton";
+import { HomeButton } from "../components/HomeButton";
+import { ROUTES } from "../constants/routes";
 
 const emptyCreateForm = {
   username: "",
@@ -288,7 +289,7 @@ export default function staffDashboardPage() {
           <Button variant="contained" onClick={openCreate}>
             Create Staff
           </Button>
-          <AdminHomeButton />
+          <HomeButton route={ROUTES.ADMIN_HOME} />
         </Box>
       </Box>
       {error && (

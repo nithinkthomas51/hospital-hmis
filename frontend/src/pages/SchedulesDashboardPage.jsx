@@ -29,6 +29,8 @@ import {
   activateSchedule,
   deactivateSchedule,
 } from "../api/schedulesApi";
+import { HomeButton } from "../components/HomeButton";
+import { ROUTES } from "../constants/routes";
 
 function toLocalInputValue(isoInstant) {
   const d = new Date(isoInstant);
@@ -323,6 +325,7 @@ export default function SchedulesDashboardPage() {
           <Button variant="contained" onClick={openCreateDialog}>
             Create Schedule
           </Button>
+          <HomeButton route={ROUTES.ADMIN_HOME} />
         </Box>
       </Box>
       {/* filters */}

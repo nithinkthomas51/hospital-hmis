@@ -31,6 +31,8 @@ import { listDepartmentsLookup } from "../api/departmentsApi";
 import { listStaffLookup } from "../api/staffApi";
 import { checkInVisit } from "../api/visitsApi";
 import { ROLES } from "../constants/roles";
+import { HomeButton } from "../components/HomeButton";
+import { ROUTES } from "../constants/routes";
 
 const emptyForm = {
   firstName: "",
@@ -322,6 +324,7 @@ export default function ReceptionPatientPage() {
           <Button variant="contained" onClick={openCreate}>
             Register Patient
           </Button>
+          <HomeButton route={ROUTES.RECEPTION_HOME} />
         </Box>
       </Box>
 

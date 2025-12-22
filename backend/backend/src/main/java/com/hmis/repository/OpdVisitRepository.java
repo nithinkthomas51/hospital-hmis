@@ -58,5 +58,21 @@ public interface OpdVisitRepository extends JpaRepository<OpdVisit, Long>{
 	        "department"
 	})
 	List<OpdVisit> findDoctorQueue(Long doctorId, Instant from, Instant to);
+	
+	@Query("""
+			SELECT v FROM OpdVisit v
+			WHERE v.active = true
+			AND v.doctor.id = :doctorId
+			AND (:status IS NULL OR v.status = :status)
+			AND (v.checkInAt >= :from AND v.checkInAt < :to)
+			ORDER BY v.checkInAt ASC
+			""")
+	@EntityGraph(attributePaths = {
+			"patient",
+			"doctor",
+			"doctor.user",
+			"department"
+	})
+	List<OpdVisit> findDoctorVisits(Long doctorId, VisitStatus status, Instant from, Instant to);
 
 }

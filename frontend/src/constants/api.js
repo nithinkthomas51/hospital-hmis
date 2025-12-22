@@ -10,4 +10,7 @@ export const API_ENDPOINTS = {
   PATIENTS: "/api/patients",
   DEPARTMENT_LOOKUP: "/api/departments",
   STAFF_LOOKUP: "/api/staff",
+  DOCTOR: "/api/doctor",
+  DOCTOR_VISITS: "/api/doctor/visits",
+  CLINICAL_VISIT: "/api/clinical/visits",
 };
